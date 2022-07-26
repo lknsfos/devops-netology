@@ -4,67 +4,77 @@
 # Михаил Карпов
 
 
-1. git log --pretty=format:"%H Комментарий: %B" -n 1 aefea
-aefead2207ef7e2aa5dc81a34aedf0cad4c32545 Комментарий Update CHANGELOG.md
-3. git show 85024d3 
-tag: v0.12.23
-4. git log -1 b8d720 видим двух родителей.
-Merge: 56cd7859e0 9ea88f22fc
+1. _git log --pretty=format:"%H Комментарий: %B" -n 1 aefea_
+
+**aefead2207ef7e2aa5dc81a34aedf0cad4c32545 Комментарий Update CHANGELOG.md**
+2. _git show 85024d3_
+
+**tag: v0.12.23**
+3. _git log -1 b8d720_ видим двух родителей.
+
+**Merge: 56cd7859e0 9ea88f22fc**
+
 Смотрим внимательно на них:
-git show b8d720^1
-56cd7859e05c36c06b56d013b55a252d0bb7e158
-git show b8d720^2
-9ea88f22fc6269854151c571162c5bcf958bee2b
-5. git log --pretty=format:"%H Комментарий: %B" v0.12.23..v0.12.24 --reverse
-225466bc3e5f35baa5d07197bbc079345b77525e Комментарий: Cleanup after v0.12.23 release
 
-dd01a35078f040ca984cdd349f18d0b67e486c35 Комментарий: Update CHANGELOG.md
-4b6d06cc5dcb78af637bbb19c198faff37a066ed Комментарий: Update CHANGELOG.md
-d5f9411f5108260320064349b757f55c09bc4b80 Комментарий: command: Fix bug when using terraform login on Windows
+_git show b8d720^1_
 
-06275647e2b53d97d4f0a19a0fec11f6d69820b5 Комментарий: Update CHANGELOG.md
-5c619ca1baf2e21a155fcdb4c264cc9e24a2a353 Комментарий: website: Remove links to the getting started guide's old location
+**56cd7859e05c36c06b56d013b55a252d0bb7e158**
 
-Since these links were in the soon-to-be-deprecated 0.11 language section, I
-think we can just remove them without needing to find an equivalent link.
+_git show b8d720^2_
 
-6ae64e247b332925b872447e9ce869657281c2bf Комментарий: registry: Fix panic when server is unreachable
+**9ea88f22fc6269854151c571162c5bcf958bee2b**
+4. _git log --pretty=format:"%H Комментарий: %B" v0.12.23..v0.12.24 --reverse_
 
-Non-HTTP errors previously resulted in a panic due to dereferencing the
+**225466bc3e5f35baa5d07197bbc079345b77525e Комментарий: Cleanup after v0.12.23 release**
+
+**dd01a35078f040ca984cdd349f18d0b67e486c35 Комментарий: Update CHANGELOG.md**
+
+**4b6d06cc5dcb78af637bbb19c198faff37a066ed Комментарий: Update CHANGELOG.md**
+
+**d5f9411f5108260320064349b757f55c09bc4b80 Комментарий: command: Fix bug when using terraform login on Windows**
+
+**06275647e2b53d97d4f0a19a0fec11f6d69820b5 Комментарий: Update CHANGELOG.md**
+
+**5c619ca1baf2e21a155fcdb4c264cc9e24a2a353 Комментарий: website: Remove links to the getting started guide's old location Since these links were in the soon-to-be-deprecated 0.11 language section, I think we can just remove them without needing to find an equivalent link.**
+
+**6ae64e247b332925b872447e9ce869657281c2bf Комментарий: registry: Fix panic when server is unreachable Non-HTTP errors previously resulted in a panic due to dereferencing the
 resp pointer while it was nil, as part of rendering the error message.
 This commit changes the error message formatting to cope with a nil
-response, and extends test coverage.
+response, and extends test coverage. Fixes #24384**
 
-Fixes #24384
+**3f235065b9347a758efadc92295b540ee0a5e26e Комментарий: Update CHANGELOG.md**
 
-3f235065b9347a758efadc92295b540ee0a5e26e Комментарий: Update CHANGELOG.md
+**b14b74c4939dcab573326f4e3ee2a62e23e12f89 Комментарий: [Website] vmc provider links**
 
-b14b74c4939dcab573326f4e3ee2a62e23e12f89 Комментарий: [Website] vmc provider links
+**33ff1c03bb960b332be3af2e333462dde88b279e Комментарий: v0.12.24**
 
-33ff1c03bb960b332be3af2e333462dde88b279e Комментарий: v0.12.24
-
-5. 
-git grep -n 'func providerSource('
+5. _git grep -n 'func providerSource('_
 
 Вывод: provider_source.go:23:func providerSource(configs []*cliconfig.ProviderInstallation, services *disco.Disco) (getproviders.Source, tfdiags.Diagnostics) {
 
-git log -L :providerSource:provider_source.go --reverse
-8c928e83589d90a031f811fae52a81be7153e82f
+_git log -L :providerSource:provider_source.go --reverse_
+**8c928e83589d90a031f811fae52a81be7153e82f**
 
-7. git grep -n 'func globalPluginDirs(' 
+7. _git grep -n 'func globalPluginDirs('_
+
 так находим в каком файле создается функция
-git log -L :globalPluginDirs:plugins.go
 
-8364383c359a6b738a436d1b7745ccdce178df47 
+**plugins.go:18:func globalPluginDirs() []string {**
 
-66ebff90cdfaa6938f26f908c7ebad8d547fea17
+_git log -L :globalPluginDirs:plugins.go_
 
-41ab0aef7a0fe030e84018973a64135b11abcd70
+**8364383c359a6b738a436d1b7745ccdce178df47** 
 
-52dbf94834cb970b510f2fba853a5b49ad9b1a46
+**66ebff90cdfaa6938f26f908c7ebad8d547fea17**
 
-78b12205587fe839f10d946ea3fdc06719decb05
+**41ab0aef7a0fe030e84018973a64135b11abcd70**
 
-7. git log -SsynchronizedWriters --oneline
-git show 5ac311e2a9
-Автор функции Martin Atkins <mart@degeneration.co.uk>
+**52dbf94834cb970b510f2fba853a5b49ad9b1a46**
+
+**78b12205587fe839f10d946ea3fdc06719decb05**
+
+7. _git log -SsynchronizedWriters --oneline_
+
+_git show 5ac311e2a9_
+
+**Автор функции Martin Atkins <mart@degeneration.co.uk>**
