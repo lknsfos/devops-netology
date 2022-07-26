@@ -4,13 +4,15 @@
 # Михаил Карпов
 
 
-1. _git log --pretty=format:"%H Комментарий: %B" -n 1 aefea_
+**1.** _git log --pretty=format:"%H Комментарий: %B" -n 1 aefea_
 
 **aefead2207ef7e2aa5dc81a34aedf0cad4c32545 Комментарий Update CHANGELOG.md**
-2. _git show 85024d3_
+
+**2.** _git show 85024d3_
 
 **tag: v0.12.23**
-3. _git log -1 b8d720_ видим двух родителей.
+
+**3.** _git log -1 b8d720_ видим двух родителей.
 
 **Merge: 56cd7859e0 9ea88f22fc**
 
@@ -23,7 +25,8 @@ _git show b8d720^1_
 _git show b8d720^2_
 
 **9ea88f22fc6269854151c571162c5bcf958bee2b**
-4. _git log --pretty=format:"%H Комментарий: %B" v0.12.23..v0.12.24 --reverse_
+
+**4.** _git log --pretty=format:"%H Комментарий: %B" v0.12.23..v0.12.24 --reverse_
 
 **225466bc3e5f35baa5d07197bbc079345b77525e Комментарий: Cleanup after v0.12.23 release**
 
@@ -48,14 +51,14 @@ response, and extends test coverage. Fixes #24384**
 
 **33ff1c03bb960b332be3af2e333462dde88b279e Комментарий: v0.12.24**
 
-5. _git grep -n 'func providerSource('_
+**5.** _git grep -n 'func providerSource('_
 
 Вывод: provider_source.go:23:func providerSource(configs []*cliconfig.ProviderInstallation, services *disco.Disco) (getproviders.Source, tfdiags.Diagnostics) {
 
 _git log -L :providerSource:provider_source.go --reverse_
 **8c928e83589d90a031f811fae52a81be7153e82f**
 
-7. _git grep -n 'func globalPluginDirs('_
+6. _git grep -n 'func globalPluginDirs('_
 
 так находим в каком файле создается функция
 
@@ -73,7 +76,7 @@ _git log -L :globalPluginDirs:plugins.go_
 
 **78b12205587fe839f10d946ea3fdc06719decb05**
 
-7. _git log -SsynchronizedWriters --oneline_
+**7.** _git log -SsynchronizedWriters --oneline_
 
 _git show 5ac311e2a9_
 
