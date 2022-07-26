@@ -58,7 +58,7 @@ response, and extends test coverage. Fixes #24384**
 _git log -L :providerSource:provider_source.go --reverse_
 **8c928e83589d90a031f811fae52a81be7153e82f**
 
-6. _git grep -n 'func globalPluginDirs('_
+**6.** _git grep -n 'func globalPluginDirs('_
 
 так находим в каком файле создается функция
 
