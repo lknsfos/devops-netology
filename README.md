@@ -1,84 +1,47 @@
 # devops-netology
 
-# Домашнее задание к занятию «2.4. Инструменты Git»
+# Домашнее задание к занятию «3.1. Работа в терминале, лекция 1»
 # Михаил Карпов
 
 
-**1.** _git log --pretty=format:"%H Комментарий: %B" -n 1 aefea_
+**5.** Оперативная память - 1024МБ, Процессоры - 2, Видеопамять - 4МБ, Жесткий диск - Виртуальный размер 64ГБ, Сетевая карта Intel PRO/1000 MT Desktop в режиме NAT.
 
-**aefead2207ef7e2aa5dc81a34aedf0cad4c32545 Комментарий Update CHANGELOG.md**
+**6.** Добавить в конфиг внутрь VagrantConfigure("2") do |config|, например, такие строки для увеличения памяти и количества процессоров:  
+	config.vm.provider "virtualbox" do |v|  
+  		v.memory = 2048  
+  		v.cpus = 4  
+	end
 
-**2.** _git show 85024d3_
+**8.** 3010 строка - описание HISTORY, упоминается HISTSIZE и далее HISTFILESIZE - количество строк записываемых в файл  
+862 Строка HISTSIZE
+846 Строка HISTFILESIZE  
+ignoreboth включает в себя ignorespace и ignoredups, которые в свою очередь исключают в истории записи о командах, начинающихся с пробелов и дубли команд.
 
-**tag: v0.12.23**
+**9.** {} используются
+как тело в связках зарезервированных команд for ! case do done elif else esac fi for function if in select then until while - 179 строка   
+в составных командах - 257 строка  
+как обозначение тела функции - 400 строка  
+в массивах для исключения конфликтов с именами - 1035 строка  
+brace expansion - замена одних данных другими из фигурных скобок - раздел с 1091 строки  
+в переменных(параметрах) для помечания позиционных параметров - строка 1167
 
-**3.** _git log -1 b8d720_ видим двух родителей.
+**10.** touch file{1..100000} получится, до 300000 не получится, так как передастся на выполнение аргументов больше чем готово  принять окружение   
+getconf ARG_MAX  
+2097152
 
-**Merge: 56cd7859e0 9ea88f22fc**
 
-Смотрим внимательно на них:
+**11.** [[ -d /tmp ]] проверит существование каталога /tmp и вернет true(1) при его существовании
 
-_git show b8d720^1_
+**12.** sudo mkdir /tmp/new_path_directory  
+sudo ln /bin/bash /usr/local/bin/  
+sudo ln /bin/bash /tmp/new_path_directory/  
+PATH=/tmp/new_path_directory/:/usr/local/bin/:$PATH  
+type -a bash  
+>bash is /tmp/new_path_directory/bash  
+>bash is /usr/local/bin/bash  
+>bash is /usr/local/bin/bash  
+>bash is /usr/bin/bash  
+>bash is /bin/bash
 
-**56cd7859e05c36c06b56d013b55a252d0bb7e158**
-
-_git show b8d720^2_
-
-**9ea88f22fc6269854151c571162c5bcf958bee2b**
-
-**4.** _git log --pretty=format:"%H Комментарий: %B" v0.12.23..v0.12.24 --reverse_
-
-**225466bc3e5f35baa5d07197bbc079345b77525e Комментарий: Cleanup after v0.12.23 release**
-
-**dd01a35078f040ca984cdd349f18d0b67e486c35 Комментарий: Update CHANGELOG.md**
-
-**4b6d06cc5dcb78af637bbb19c198faff37a066ed Комментарий: Update CHANGELOG.md**
-
-**d5f9411f5108260320064349b757f55c09bc4b80 Комментарий: command: Fix bug when using terraform login on Windows**
-
-**06275647e2b53d97d4f0a19a0fec11f6d69820b5 Комментарий: Update CHANGELOG.md**
-
-**5c619ca1baf2e21a155fcdb4c264cc9e24a2a353 Комментарий: website: Remove links to the getting started guide's old location Since these links were in the soon-to-be-deprecated 0.11 language section, I think we can just remove them without needing to find an equivalent link.**
-
-**6ae64e247b332925b872447e9ce869657281c2bf Комментарий: registry: Fix panic when server is unreachable Non-HTTP errors previously resulted in a panic due to dereferencing the
-resp pointer while it was nil, as part of rendering the error message.
-This commit changes the error message formatting to cope with a nil
-response, and extends test coverage. Fixes #24384**
-
-**3f235065b9347a758efadc92295b540ee0a5e26e Комментарий: Update CHANGELOG.md**
-
-**b14b74c4939dcab573326f4e3ee2a62e23e12f89 Комментарий: [Website] vmc provider links**
-
-**33ff1c03bb960b332be3af2e333462dde88b279e Комментарий: v0.12.24**
-
-**5.** _git grep -n 'func providerSource('_
-
-Вывод: provider_source.go:23:func providerSource(configs []*cliconfig.ProviderInstallation, services *disco.Disco) (getproviders.Source, tfdiags.Diagnostics) {
-
-_git log -L :providerSource:provider_source.go --reverse_
-
-**8c928e83589d90a031f811fae52a81be7153e82f**
-
-**6.** _git grep -n 'func globalPluginDirs('_
-
-так находим в каком файле создается функция
-
-**plugins.go:18:func globalPluginDirs() []string {**
-
-_git log -L :globalPluginDirs:plugins.go_
-
-**8364383c359a6b738a436d1b7745ccdce178df47** 
-
-**66ebff90cdfaa6938f26f908c7ebad8d547fea17**
-
-**41ab0aef7a0fe030e84018973a64135b11abcd70**
-
-**52dbf94834cb970b510f2fba853a5b49ad9b1a46**
-
-**78b12205587fe839f10d946ea3fdc06719decb05**
-
-**7.** _git log -SsynchronizedWriters --oneline_
-
-_git show 5ac311e2a9_
-
-**Автор функции Martin Atkins <mart@degeneration.co.uk>**
+**13.** at запускает команду в определенное время  
+batch запускает команду когда загрузка системы достигает заданного значения.
