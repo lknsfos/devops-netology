@@ -30,14 +30,14 @@ getconf ARG_MAX
 2097152
 
 
-**11.** [[ -d /tmp ]] проверит существование каталога /tmp и вернет успешный exit code 0 при его существовании  
-vagrant@vagrant:~$[[ -d /tmp ]] && echo "true" || echo "false"      
+**11.** \[[ -d /tmp ]] проверит существование каталога /tmp и вернет успешный exit code 0 при его существовании  
+vagrant@vagrant:~$\[[ -d /tmp ]] && echo "true" || echo "false"      
 **Вывод:** true      
 echo $? вернет последний exit code команды  
-vagrant@vagrant:~$ [[ -d /tmp ]]  
+vagrant@vagrant:~$ \[[ -d /tmp ]]  
 vagrant@vagrant:~$ echo $?  
 0  
-vagrant@vagrant:~$ [[ -d /tmp1 ]]  
+vagrant@vagrant:~$ \[[ -d /tmp1 ]]  
 vagrant@vagrant:~$ echo $?  
 1  
 Проверка показала, что директория /tmp существует - 0 и /tmp1 не существует - 1.
