@@ -30,11 +30,17 @@ getconf ARG_MAX
 2097152
 
 
-**11.** [[ -d /tmp ]] проверит существование каталога /tmp и вернет true(1) при его существовании  
-vagrant@vagrant:~$[[ -d /tmp ]] && echo $ || echo "false"      
-**Вывод:** $  
-Использовать echo $ в данном случае можно в конструкции проверки условия и зная, что $ - положительный ответ.
-Проверка показала, что директория существует.
+**11.** [[ -d /tmp ]] проверит существование каталога /tmp и вернет успешный exit code 0 при его существовании  
+vagrant@vagrant:~$[[ -d /tmp ]] && echo "true" || echo "false"      
+**Вывод:** true      
+echo $? вернет последний exit code команды  
+vagrant@vagrant:~$ [[ -d /tmp ]]  
+vagrant@vagrant:~$ echo $?  
+0  
+vagrant@vagrant:~$ [[ -d /tmp1 ]]  
+vagrant@vagrant:~$ echo $?  
+1  
+Проверка показала, что директория /tmp существует - 0 и /tmp1 не существует - 1.
 
 **12.** sudo mkdir /tmp/new_path_directory  
 sudo ln /bin/bash /usr/local/bin/  
