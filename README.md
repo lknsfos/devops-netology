@@ -30,7 +30,7 @@ lala
 Ну или пример из задания  
 vagrant@vagrant:\~$ echo netology > /proc/$$/fd/5  
 netology  
-Отправляем строку netology в процесс нашего баша ($$), в дескриптор 5, который перенаправляет поток в дескриптор 1 (stdout). Итого видим на выходе отправленную строку "netology"
+Отправляем строку netology в процесс нашего баша ($$), в дескриптор 5, который перенаправляет поток в дескриптор 1 (stdout). Итого видим на выходе отправленную строку "netology"  
 **8.** ls /proc/$$/fd/4 
 mkdir /root/yandex 4>&2 2>&1 1>&4 | grep can  
 mkdir: cannot create directory ‘/root/yandex’: Permission denied  
