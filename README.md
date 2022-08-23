@@ -1,57 +1,58 @@
 # devops-netology
 
-# Домашнее задание к занятию «3.1. Работа в терминале, лекция 1»
+# Домашнее задание к занятию «3.2. Работа в терминале, лекция 2»
 # Михаил Карпов
 
-
-**5.** Оперативная память - 1024МБ, Процессоры - 2, Видеопамять - 4МБ, Жесткий диск - Виртуальный размер 64ГБ, Сетевая карта Intel PRO/1000 MT Desktop в режиме NAT.
-
-**6.** Добавить в конфиг внутрь VagrantConfigure("2") do |config|, например, такие строки для увеличения памяти и количества процессоров:  
-	config.vm.provider "virtualbox" do |v|  
-  		v.memory = 2048  
-  		v.cpus = 4  
-	end
-
-**8.** 3010 строка - описание HISTORY, упоминается HISTSIZE и далее HISTFILESIZE - количество строк записываемых в файл  
-862 Строка HISTSIZE
-846 Строка HISTFILESIZE  
-ignoreboth включает в себя ignorespace и ignoredups, которые в свою очередь исключают в истории записи о командах, начинающихся с пробелов и дубли команд.
-
-**9.** {} используются
-как тело в связках зарезервированных команд for ! case do done elif else esac fi for function if in select then until while - 179 строка   
-в составных командах - 257 строка  
-как обозначение тела функции - 400 строка  
-в массивах для исключения конфликтов с именами - 1035 строка  
-brace expansion - замена одних данных другими из фигурных скобок - раздел с 1091 строки  
-в переменных(параметрах) для помечания позиционных параметров - строка 1167
-
-**10.** touch file{1..100000} получится, до 300000 не получится, так как передастся на выполнение аргументов больше чем готово  принять окружение   
-getconf ARG_MAX  
-2097152
-
-
-**11.** [[ -d /tmp ]] проверит существование каталога /tmp и вернет успешный exit code 0 при его существовании  
-vagrant@vagrant:\~$[[ -d /tmp ]] && echo "true" || echo "false"      
-**Вывод:** true      
-echo $? вернет последний exit code команды  
-vagrant@vagrant:\~$ [[ -d /tmp ]]  
-vagrant@vagrant:\~$ echo $?  
-0  
-vagrant@vagrant:\~$ [[ -d /tmp1 ]]  
-vagrant@vagrant:\~$ echo $?  
-1  
-Проверка показала, что директория /tmp существует - 0 и /tmp1 не существует - 1.
-
-**12.** sudo mkdir /tmp/new_path_directory  
-sudo ln /bin/bash /usr/local/bin/  
-sudo ln /bin/bash /tmp/new_path_directory/  
-PATH=/tmp/new_path_directory/:/usr/local/bin/:$PATH  
-type -a bash  
->bash is /tmp/new_path_directory/bash  
->bash is /usr/local/bin/bash  
->bash is /usr/local/bin/bash  
->bash is /usr/bin/bash  
->bash is /bin/bash
-
-**13.** at запускает команду в определенное время  
-batch запускает команду когда загрузка системы достигает заданного значения.
+**1.** Команда cd...  
+**2.** grep -c (-c это count)  
+**3.** sudo ls -l /proc/1/exe    
+lrwxrwxrwx 1 root root 0 Aug 23 08:25 /proc/1/exe -> /usr/lib/systemd/systemd    
+Ответ: systemd  
+Для просмотра дерева родительства  
+pstree -p 1  
+systemd(1)─┬─ModemManager(735)─┬─{ModemManager}(754)....    
+**4.**  vagrant@vagrant:\~$ tty  
+/dev/pts/0  
+vagrant@vagrant:\~$ ls something 2>/dev/pts/1    
+**5.** vagrant@vagrant:\~$ echo "test123" > something  
+vagrant@vagrant:\~$ cat < something > someelse  
+vagrant@vagrant:\~$ cat someelse  
+test123  
+**6.** Перевести возможно из pty в tty стандартным способом, например  
+echo $PATH > /dev/tty2  
+но для просмотра потребуется переключение в данную tty из графического режима (например ctrl+alt+F2)  
+**7.** Выполнение визуально ничего не производит  
+vagrant@vagrant:\~$ bash 5>$1  
+vagrant@vagrant:\~$  
+Но создастся кастомный дескриптор 5, перенаправляющий в stdout.  
+vagrant@vagrant:\~$ echo "lala" >&5  
+lala  
+Ну или пример из задания  
+vagrant@vagrant:\~$ echo netology > /proc/$$/fd/5  
+netology  
+Отправляем строку netology в процесс нашего баша ($$), в дескриптор 5, который перенаправляет поток в дескриптор 1 (stdout). Итого видим на выходе отправленную строку "netology"
+**8.** ls /proc/$$/fd/4 
+mkdir /root/yandex 4>&2 2>&1 1>&4 | grep can  
+mkdir: cannot create directory ‘/root/yandex’: Permission denied  
+Создали новый дескриптор 4, направили его в stderr, stderr вливаем в stdout, stdout в новый десприптор, который выльет в stderr.  
+**9.** Выведутся переменные текущего окружения. Аналогичная команда env  
+**10.** cmdline содержит команду запущенного процесса: /proc/[pid]/cmdline This read-only file holds the complete command line for the process, unless the process  is  a  zombie. In  the  latter case, there is nothing in this file: that is, a read on this file will return 0 characters.  The command-line arguments appear in this file as a set  of  strings  separated  by  null  bytes ('\0'), with a further null byte after the last string.  
+exe представляет собой символьную ссылку на само приложение процесса:  
+/proc/[pid]/exe
+              Under  Linux 2.2 and later, this file is a symbolic link containing the actual pathname of the executed
+              command.  This symbolic link can be dereferenced normally; attempting to open it  will  open  the  exe‐
+              cutable.   You  can  even type /proc/[pid]/exe to run another copy of the same executable that is being
+              run by process [pid].  If the pathname has been unlinked, the symbolic link  will  contain  the  string
+              '(deleted)'  appended  to the original pathname.  In a multithreaded process, the contents of this sym‐
+              bolic link are not  available  if  the  main  thread  has  already  terminated  (typically  by  calling
+              pthread_exit(3)).
+**11.** vagrant@vagrant:\~$ cat /proc/cpuinfo | grep -i SSE  
+flags  : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch invpcid_single fsgsbase avx2 invpcid rdseed clflushopt md_clear flush_l1d arch_capabilities    
+Ответ: 4.2  
+**12.** Для выполнения команды tty требуется созданный tty, однако при создании ssh соединения с выполнением команды, терминал не создается, потому не получается взять информацию о нем.    
+Следует принудительно создать терминал с помощью ключа -t.  
+vagrant@vagrant:\~$ ssh -t localhost 'tty'    
+vagrant@localhost's password:    
+/dev/pts/2    
+**14.** tee читает из из stdin и пишет сразу в файл и в stdout.  
+В данном случае tee с правами администратора берет stdin слева от pipe и вносит его в /root/new_file 
