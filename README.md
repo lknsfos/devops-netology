@@ -54,5 +54,29 @@ flags  : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36
 vagrant@vagrant:\~$ ssh -t localhost 'tty'    
 vagrant@localhost's password:    
 /dev/pts/2    
+**13.** vagrant@vagrant:\~$ apt-get install reptyr    
+vagrant@vagrant:\~$ nano something  
+ctrl+z   
+vagrant@vagrant:\~$ ps ax | grep nano  
+   1478 pts/2    T      0:00 nano something  
+Открываем еще одну консоль vagrant ssh
+vagrant@vagrant:\~$ screen -t nano
+vagrant@vagrant:\~$ reptyr 1478
+Здесь выдало ошибку
+Unable to attach to pid 1478: Operation not permitted
+The kernel denied permission while attaching. If your uid matches
+the target's, check the value of /proc/sys/kernel/yama/ptrace_scope.
+For more information, see /etc/sysctl.d/10-ptrace.conf
+следуя ошибке, пошел в /etc/sysctl.d/10-ptrace.conf и поправил значение на  
+kernel.yama.ptrace_scope = 0
+sysctl -p не помог, только полная перезагрузка виртуалки.
+vagrant@vagrant:\~$ nano something  
+ctrl+z   
+vagrant@vagrant:\~$ ps ax | grep nano  
+   1472 pts/2    T      0:00 nano something  
+Во второй консоли
+vagrant@vagrant:\~$ screen -t nano
+vagrant@vagrant:\~$ reptyr 1472
+И в нашем screen уже появляется nano.
 **14.** tee читает из из stdin и пишет сразу в файл и в stdout.  
 В данном случае tee с правами администратора берет stdin слева от pipe и вносит его в /root/new_file 
