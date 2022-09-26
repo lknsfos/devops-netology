@@ -24,6 +24,7 @@ PID    COMM               FD ERR PATH
 670    dbus-daemon        21   0 /var/lib/snapd/dbus-1/system-services/    
 677    irqbalance          6   0 /proc/interrupts    
 677    irqbalance          6   0 /proc/stat    
+
 **6.** uname трижды вызывает uname({sysname="Linux", nodename="vagrant", ...}) = 0  
 В установленной системе не имелось man для системного вызова uname, потому использовался man внешний    
        Part of the utsname information is also accessible via
