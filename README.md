@@ -63,13 +63,13 @@ origin:         AS199933
 **7.** DNS сервера NS    
 dns.google.             21600   IN      NS      ns3.zdns.google.  
 dns.google.             21600   IN      NS      ns4.zdns.google.  
-dns.google.             21600   IN      NS      ns1.zdns.google.  
-dns.google.             21600   IN      NS      ns2.zdns.google.  
+dns.google.             21600   IN      NS      ns1.zdns.google.    
+dns.google.             21600   IN      NS      ns2.zdns.google.    
    
-A сервера 
-dns.google.             362     IN      A       8.8.4.4
-dns.google.             362     IN      A       8.8.8.8
+A сервера  
+dns.google.             362     IN      A       8.8.4.4  
+dns.google.             362     IN      A       8.8.8.8  
 
 **8.** PTR
-4.4.8.8.in-addr.arpa.   42148   IN      PTR     dns.google.
-8.8.8.8.in-addr.arpa.   43200   IN      PTR     dns.google.
+4.4.8.8.in-addr.arpa.   42148   IN      PTR     dns.google.  
+8.8.8.8.in-addr.arpa.   43200   IN      PTR     dns.google.  
