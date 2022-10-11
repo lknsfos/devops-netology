@@ -1,153 +1,75 @@
 # devops-netology
 
-# Домашнее задание к занятию «3.4. Операционные системы, лекция 2»
+# Домашнее задание к занятию «3.6. Компьютерные сети, лекция 1»
 # Михаил Карпов
 
-**1.** Запущен   
-ps aux | grep node_  
-root        6024  0.0  0.7 724992 14984 ?        Ssl  12:25   0:00 /opt/node_exporter/node_exporter  
-  
-Запущен через systemctl  
-  
-systemctl status node_exporter  
-● node_exporter.service - Node Exporter  
-     Loaded: loaded (/etc/systemd/system/node_exporter.service; disabled; vendor preset: enabled)  
-     Active: active (running) since Wed 2022-10-05 12:25:16 IDT; 1min 48s ago  
-   Main PID: 6024 (node_exporter)  
-      Tasks: 5 (limit: 2236)  
-     Memory: 6.6M  
-        CPU: 17ms  
-     CGroup: /system.slice/node_exporter.service  
-             └─6024 /opt/node_exporter/node_exporter  
-  
-Oct 05 12:25:16 ubuntu-linux-22-04-desktop node_exporter[6024]: ts=2022-10-05T09:25:16.133Z caller=node_exporter.go:115 level
-  
-  Включаем автозапуск  
-systemctl enable node_exporter  
-  
-После перезапуска - восстанавливается.
-  
-systemctl status node_exporter  
-● node_exporter.service - Node Exporter  
-     Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; vendor>  
-     Active: active (running) since Wed 2022-10-05 12:35:22 IDT; 50s ago  
-   Main PID: 682 (node_exporter)  
-      Tasks: 5 (limit: 2236)  
-     Memory: 13.5M  
-        CPU: 12ms  
-     CGroup: /system.slice/node_exporter.service  
-             └─682 /opt/node_exporter/node_exporter
+**1.** В ответ получаем 301 Moved Permanently. Страница была перемещена. Судя по Location: https://stackoverflow.com/questions страница перемещена на https  
 
+**2.** В ответ на запрос http://stackoverflow.com первым обратно прилетает  
+307: Internal Redirect  
+Дольше всего обрабатывался запрос GET https://stackoverflow.com
+Обработка заняла 337.50мс
+**3.** Мой IP: 185.41.121.9  
+**4.** netname:        ELEKTRANET-MAN-1  
+descr:          Elektranet city network  
+descr:          Pavlovskiy Posad, Russia  
+origin:         AS199933  
 
+**5.** traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets  
+ 1  192.168.98.1 [*]  0.181 ms  0.218 ms  0.253 ms  
+ 2  185.41.120.1 [AS199933]  0.460 ms  0.465 ms  0.472 ms  
+ 3  188.43.22.238 [AS20485]  3.337 ms  4.141 ms  4.109 ms  
+ 4  217.150.44.9 [AS20485]  3.239 ms  3.255 ms  3.265 ms  
+ 5  * * *  
 
-  
-Может останавливаться.    
-  
-sudo systemctl stop node_exporter  
-sudo systemctl status node_exporter  
-○ node_exporter.service - Node Exporter  
-     Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; vendor>  
-     Active: inactive (dead) since Wed 2022-10-05 12:41:38 IDT; 5s ago  
-    Process: 682 ExecStart=/opt/node_exporter/node_exporter (code=killed, signa>  
-   Main PID: 682 (code=killed, signal=TERM)  
-        CPU: 13ms  
-  
-systemctl status node_exporter
-● node_exporter.service - Node Exporter
-     Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; vendor>
-     Active: active (running) since Wed 2022-10-05 12:35:22 IDT; 50s ago
-   Main PID: 682 (node_exporter)
-      Tasks: 5 (limit: 2236)
-     Memory: 13.5M
-        CPU: 12ms
-     CGroup: /system.slice/node_exporter.service
-             └─682 /opt/node_exporter/node_exporter
+ 6  108.170.250.129 [AS15169]  3.545 ms 108.170.227.82 [AS15169]  2.240 ms 108.170.250.33 [AS15169]  3.514 ms  
+ 7  108.170.250.146 [AS15169]  2.507 ms *  7.796 ms  
+ 8  142.250.239.64 [AS15169]  13.977 ms * 142.251.238.84 [AS15169]  14.641 ms  
+ 9  172.253.65.82 [AS15169]  14.683 ms 72.14.232.86 [AS15169]  14.590 ms 142.251.237.148 [AS15169]  17.472 ms  
+10  172.253.51.219 [AS15169]  17.274 ms 142.250.56.221 [AS15169]  18.731 ms 142.250.238.181 [AS15169]  18.910 ms  
+11  * * *
 
-Сам файл конфигурации для systemd  
+12  * * *
 
-cat /etc/systemd/system/node_exporter.service   
-[Unit]  
-Description=Node Exporter  
+13  * * *
+
+14  * * *
+
+15  * * *
+
+16  * * *
+
+17  * * *
+
+18  * * *
+
+19  * * *
+
+20  8.8.8.8 [AS15169]  16.162 ms *  13.855 ms  
+
+**6.**
+В целом максимальные задержки только на последнем хопе и немного плохо отвечает на пинги роутер 185.41.121.9 .                                                                                                                      Packets               Pings
+ Host                                                                                                               Loss%   Snt   Last   Avg  Best  Wrst StDev  
+ 1. AS???   192.168.98.1                                                                                             0.0%    42    0.2   0.2   0.1   0.3   0.0  
+ 2. AS199933185.41.120.1                                                                                             2.4%    41    1.4   1.8   0.3  45.0   7.1  
+ 3. AS20485 188.43.22.238                                                                                            0.0%    41    3.1   4.4   3.0  11.2   1.8  
+ 4. AS20485 217.150.44.9                                                                                             0.0%    41    3.1   3.0   2.8   3.9   0.0  
+ 5. AS15169 216.239.49.19                                                                                            0.0%    41    2.5   2.6   2.5   3.5   0.0  
+ 6. AS15169 108.170.250.99                                                                                           0.0%    41    3.3   3.1   3.0   3.5   0.0  
+ 7. AS15169 172.253.66.116                                                                                           0.0%    41   17.1  17.3  17.1  18.4   0.2  
+ 8. AS15169 72.14.235.69                                                                                             0.0%    41   19.5  17.2  16.8  19.5   0.4  
+ 9. AS15169 142.250.236.77                                                                                           0.0%    41   18.4  18.5  18.2  19.3   0.0  
+
+**7.** DNS сервера NS    
+dns.google.             21600   IN      NS      ns3.zdns.google.  
+dns.google.             21600   IN      NS      ns4.zdns.google.  
+dns.google.             21600   IN      NS      ns1.zdns.google.  
+dns.google.             21600   IN      NS      ns2.zdns.google.  
    
-[Service]  
-ExecStart=/opt/node_exporter/node_exporter $NODE_ADD_OPTIONS  
-EnvironmentFile=/etc/default/node_exporter  
-   
-[Install]  
-WantedBy=default.target  
+A сервера 
+dns.google.             362     IN      A       8.8.4.4
+dns.google.             362     IN      A       8.8.8.8
 
-cat /etc/default/node_exporter   
-NODE_ADD_OPTIONS="-h"  
-
-  
-
-
-**2.** CPU
-node_cpu_seconds_total{cpu="0",mode="idle"}  
-node_cpu_seconds_total{cpu="0",mode="iowait"}  
-node_cpu_seconds_total{cpu="0",mode="softirq"}  
-node_cpu_seconds_total{cpu="0",mode="system"}  
-node_cpu_seconds_total{cpu="0",mode="user"}  
-Те же параметры для второго и последующих cpu.  
-  
-Memory  
-node_memory_MemAvailable_bytes  
-node_memory_MemTotal_bytes  
-node_memory_SwapFree_bytes  
-node_memory_SwapTotal_bytes
-  
-Disk  
-node_disk_io_time_seconds_total
-node_disk_read_bytes_total
-node_disk_written_bytes_total
-
-Network
-node_network_carrier  
-node_network_carrier_changes_total  
-node_network_iface_link  
-ode_network_mtu_bytes  
-node_network_receive_bytes_total  
-node_network_receive_drop_total  
-node_network_receive_errs_total  
-node_network_receive_packets_total  
-node_network_speed_bytes  
-node_network_transmit_bytes_total  
-node_network_transmit_drop_total  
-node_network_transmit_errs_total  
-node_network_transmit_packets_total  
-node_network_transmit_queue_length
-
-**3.** Дз выполеяется не на x86 системе, vagrant+virtualbox не имееются, но bind на все адреса сработал, с головной машины доступ получил.  
-
-**4.** В dmesg находится сообщение systemd об обнаружении сиситемы виртуализации. Возможно этого возможно будет избажать используя редкую нестандартную систему виртуализации.  
-sudo dmesg | grep virt  
-[    0.000000] arch_timer: cp15 timer(s) running at 24.00MHz (virt).  
-[    0.144583] virtio-pci 0000:00:05.0: virtio_pci: leaving for legacy driver  
-[    0.490725] virtio_net virtio1 enp0s5: renamed from eth0  
-[    4.164584] systemd[1]: Detected virtualization parallels.  
-[    4.679436] [drm] pci: virtio-vga detected at 0000:00:0a.0  
-[    4.680157] [drm] Initialized virtio_gpu 0.1.0 0 for virtio2 on minor 0  
-
-**5.** sudo sysctl -a | grep fs.nr_open  
-fs.nr_open = 1048576
-Это максимальное количество файловых дескрипторов, которые может использовать процесс. Но по факту будет ограничено ulimit -Sn.    
-ulimit -Sn  
-1024  
-**6.** unshare --fork --pid --mount-proc sleep 1h  
-В другом терминале  
-ps ax | grep sleep  
-  40939 pts/1    S+     0:00 unshare --fork --pid --mount-proc sleep 1h    
-  40940 pts/1    S+     0:00 sleep 1h    
-nsenter -t 40940 --pid --mount  
-ps ax   
-    PID TTY      STAT   TIME COMMAND  
-      1 pts/1    S+     0:00 sleep 1h  
-      2 pts/3    S      0:00 -bash  
-     17 pts/3    R+     0:00 ps ax  
-
-**7.** :(){ :|:& };:  
-судя по действию и описанию, здесь создается фуннкция вызывающая саму себя. Организуется бесконечный цикл.  
-Метод которым был остановлен скрипт:  
-[ 5603.570118] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/user@1000.service/app.slice/app-org.gnome.Terminal.slice/vte-spawn-322c4bd2-cd21-44f1-8ee7-1429992d6611.scope  
-Судя по всему он настроен в конфигурациях security limits.  
-Скрипт может быть будет ограничен количеством процессов на пользователя, например ulimit -u 10, после которого он будет выполняться всего несколько секунд и успеет завершиться сам.  
+**8.** PTR
+4.4.8.8.in-addr.arpa.   42148   IN      PTR     dns.google.
+8.8.8.8.in-addr.arpa.   43200   IN      PTR     dns.google.
