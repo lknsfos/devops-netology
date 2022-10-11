@@ -8,10 +8,10 @@
 **2.** В ответ на запрос http://stackoverflow.com первым обратно прилетает  
 307: Internal Redirect  
 Дольше всего обрабатывался запрос GET https://stackoverflow.com
-Обработка заняла 337.50мс
+Обработка заняла 337.50мс  
 **3.** Мой IP: 185.41.121.9  
-**4.** netname:        ELEKTRANET-MAN-1  
-descr:          Elektranet city network  
+**4.** netname:        ELEKTRANET-MAN-1    
+descr:          Elektranet city network   
 descr:          Pavlovskiy Posad, Russia  
 origin:         AS199933  
 
