@@ -65,17 +65,21 @@ systemctl status node_exporter
 
 Сам файл конфигурации для systemd  
 
-cat node_exporter.service   
+cat /etc/systemd/system/node_exporter.service   
 [Unit]  
 Description=Node Exporter  
    
 [Service]  
-ExecStart=/opt/node_exporter/node_exporter  
+ExecStart=/opt/node_exporter/node_exporter $NODE_ADD_OPTIONS  
 EnvironmentFile=/etc/default/node_exporter  
    
 [Install]  
 WantedBy=default.target  
 
+cat /etc/default/node_exporter   
+NODE_ADD_OPTIONS="-h"  
+
+  
 
 
 **2.** CPU
