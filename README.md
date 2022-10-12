@@ -35,31 +35,31 @@ Paths: (21 available, best #20, table default)
       rx pathid: 0, tx pathid: 0  
 
 **2.** Создаем интерфейс  
-root@ubuntu-linux-22-04-desktop:~# ip link add dummy0 type dummy  
-root@ubuntu-linux-22-04-desktop:~# ip link list
+root@ubuntu-linux-22-04-desktop:# ip link add dummy0 type dummy  
+root@ubuntu-linux-22-04-desktop:# ip link list
 3: dummy0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000  
     link/ether 8e:31:7e:ff:27:1b brd ff:ff:ff:ff:ff:ff  
 
 Смотрим маршруты
 
-root@ubuntu-linux-22-04-desktop:~# ip r  
+root@ubuntu-linux-22-04-desktop:# ip r  
 default via 10.211.55.1 dev enp0s5 proto dhcp src 10.211.55.3 metric 100   
 10.211.55.0/24 dev enp0s5 proto kernel scope link src 10.211.55.3 metric 100   
 10.211.55.1 dev enp0s5 proto dhcp scope link src 10.211.55.3 metric 100
 
 Добавляем один простой статический маршрут  
 
-root@ubuntu-linux-22-04-desktop:~# ip r add 192.168.0.0/16 via 10.211.55.1
+root@ubuntu-linux-22-04-desktop:# ip r add 192.168.0.0/16 via 10.211.55.1
 
 Добавляем адрес на тупой интерфейс, поднимаем ему линк и добавляем маршрут через "его шлюз"
 
-root@ubuntu-linux-22-04-desktop:~# ip addr add 100.64.0.25/24 dev dummy0  
-root@ubuntu-linux-22-04-desktop:~# ip link set dummy0 up  
-root@ubuntu-linux-22-04-desktop:~# ip r add 100.64.0.0/10 via 100.64.0.1
+root@ubuntu-linux-22-04-desktop:# ip addr add 100.64.0.25/24 dev dummy0  
+root@ubuntu-linux-22-04-desktop:# ip link set dummy0 up  
+root@ubuntu-linux-22-04-desktop:# ip r add 100.64.0.0/10 via 100.64.0.1
 
 Смотрим, что всё добавилось
 
-root@ubuntu-linux-22-04-desktop:~# ip r  
+root@ubuntu-linux-22-04-desktop:# ip r  
 default via 10.211.55.1 dev enp0s5 proto dhcp src 10.211.55.3 metric 100   
 10.211.55.0/24 dev enp0s5 proto kernel scope link src 10.211.55.3 metric 100   
 10.211.55.1 dev enp0s5 proto dhcp scope link src 10.211.55.3 metric 100  
