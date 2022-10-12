@@ -1,75 +1,85 @@
 # devops-netology
 
-# Домашнее задание к занятию «3.6. Компьютерные сети, лекция 1»
+# Домашнее задание к занятию «3.7. Компьютерные сети, лекция 2»
 # Михаил Карпов
 
-**1.** В ответ получаем 301 Moved Permanently. Страница была перемещена. Судя по Location: https://stackoverflow.com/questions страница перемещена на https  
+**1.** В линукс инструментарии из net-tools2 (ip: ip a для просмотра интерфейсов с их адресами, ip link для промотра статуса интерфейсов)  
+В более старых системах или если установлен net-tools можно использовать ifconfig. Он же чаще встречается на других unix-like системах.
+В windows используем ipconfig /all
 
-**2.** В ответ на запрос http://stackoverflow.com первым обратно прилетает  
-307: Internal Redirect  
-Дольше всего обрабатывался запрос GET https://stackoverflow.com
-Обработка заняла 337.50мс  
-**3.** Мой IP: 185.41.121.9  
-**4.** netname:        ELEKTRANET-MAN-1    
-descr:          Elektranet city network   
-descr:          Pavlovskiy Posad, Russia  
-origin:         AS199933  
+**2.** Для распознования соседа обычно используется lldp. В линукс ставится apt install lldpd  
 
-**5.** traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets  
- 1  192.168.98.1 [*]  0.181 ms  0.218 ms  0.253 ms  
- 2  185.41.120.1 [AS199933]  0.460 ms  0.465 ms  0.472 ms  
- 3  188.43.22.238 [AS20485]  3.337 ms  4.141 ms  4.109 ms  
- 4  217.150.44.9 [AS20485]  3.239 ms  3.255 ms  3.265 ms  
- 5  * * *  
+**3.** Для разделения коммутатора на несколько виртуальных сетей на начальном этапе используется vlan (802.1q). В линукс надо поставить пакет vlan.
+Пример centos
+cat /etc/sysconfig/network-scripts/ifcfg-vlan49  
+VLAN="yes"  
+VLAN_NAME_TYPE=VLAN_PLUS_VID_NO_PAD  
+DEVICE="vlan49"  
+PHYSDEV="eth0"  
+BOOTPROTO="static"  
+ONBOOT="yes"  
+TYPE="Ethernet"  
+IPADDR="172.16.31.2"  
+NETMASK="255.255.255.0"  
+DESCRIPTION="unset"  
 
- 6  108.170.250.129 [AS15169]  3.545 ms 108.170.227.82 [AS15169]  2.240 ms 108.170.250.33 [AS15169]  3.514 ms  
- 7  108.170.250.146 [AS15169]  2.507 ms *  7.796 ms  
- 8  142.250.239.64 [AS15169]  13.977 ms * 142.251.238.84 [AS15169]  14.641 ms  
- 9  172.253.65.82 [AS15169]  14.683 ms 72.14.232.86 [AS15169]  14.590 ms 142.251.237.148 [AS15169]  17.472 ms  
-10  172.253.51.219 [AS15169]  17.274 ms 142.250.56.221 [AS15169]  18.731 ms 142.250.238.181 [AS15169]  18.910 ms  
-11  * * *
+Пример ubuntu с netplan  
+  vlans:  
+    vlan29:  
+      id: 29  
+      link: enp7s0f0  
+      addresses: [192.168.209.187/24]  
+    vlan25:  
+      id: 25  
+      link: enp7s0f0  
+      addresses: [10.224.194.154/24, 10.224.194.153/32]  
+      routes:  
+        - to: 10.0.0.0/8  
+          via: 10.224.194.129  
+          metric: 1  
+        - to: 172.16.40.0/22  
+          via: 10.224.194.129  
+          metric: 1  
 
-12  * * *
+Пример debian, bridge+vlan  
+auto br0.432  
+iface br0.432 inet static  
+    bridge_ports eth0.432  
+    bridge_fd 0  
+    bridge_stp off  
+    address 192.168.209.1  
+    netmask 255.255.255.0  
 
-13  * * *
+**4.** В линукс используется bonding или teaming (teamd)
+Teaming конфигов не приведу, только тестировал несколько лет назад,
+bonding довольно просто настраивается через networkd в debian-like  
+auto enp7s0f0  
+iface enp7s0f0 inet manual  
+    bond-master enp7s0f0  
+    bond-primary eth0  
 
-14  * * *
+auto enp7s0f1  
+iface enp7s0f1 inet manual  
+    bond-master bond0  
 
-15  * * *
+auto bond0  
+iface bond0 inet static  
+    address 10.11.0.2  
+    gateway 10.11.0.1  
+    netmask 255.255.255.0  
+    bond-mode 4  
+    bond-miimon 100  
+    bond-slaves none
+    bond-xmit-hash-policy layer3+4
+  
+bond-mode 4 указывает, что используется протокол lacp (802.3ad), можно также использовать другие методы (статической аггрегации),  
+bond-xmit-hash-policy layer3+4 указывает на балансировку по совокупности информации о ip-адресах и номерах портов назначения.  
+Также для балансировки можно указывать балансировку по mac-адресам, ip+mac.  
+**5.** В сети /29, если не использовать для переразбиения, можно использовать 6 адресов, всего будет занято 8 адресов (включая адрес сети и бродкаст)  
+Одну /24 сеть можно разбить на 32 /29 сети (256/8=32).
+Примеры сетей: 10.10.10.128/29, 10.10.10.32/29  
+**6.** Если заняты все private-range адреса, то предлагается использовать для 40-50 хостов либо незанятую область 240.0.0.0/26, либо, что не совсем по стандарту, но в целом взлетит: private-pool для cg-nat:
+100.64.0.0/26.
 
-16  * * *
-
-17  * * *
-
-18  * * *
-
-19  * * *
-
-20  8.8.8.8 [AS15169]  16.162 ms *  13.855 ms  
-
-**6.**
-В целом максимальные задержки только на последнем хопе и немного плохо отвечает на пинги роутер 185.41.121.9 .                                                                                                                      Packets               Pings
- Host                                                                                                               Loss%   Snt   Last   Avg  Best  Wrst StDev  
- 1. AS???   192.168.98.1                                                                                             0.0%    42    0.2   0.2   0.1   0.3   0.0  
- 2. AS199933185.41.120.1                                                                                             2.4%    41    1.4   1.8   0.3  45.0   7.1  
- 3. AS20485 188.43.22.238                                                                                            0.0%    41    3.1   4.4   3.0  11.2   1.8  
- 4. AS20485 217.150.44.9                                                                                             0.0%    41    3.1   3.0   2.8   3.9   0.0  
- 5. AS15169 216.239.49.19                                                                                            0.0%    41    2.5   2.6   2.5   3.5   0.0  
- 6. AS15169 108.170.250.99                                                                                           0.0%    41    3.3   3.1   3.0   3.5   0.0  
- 7. AS15169 172.253.66.116                                                                                           0.0%    41   17.1  17.3  17.1  18.4   0.2  
- 8. AS15169 72.14.235.69                                                                                             0.0%    41   19.5  17.2  16.8  19.5   0.4  
- 9. AS15169 142.250.236.77                                                                                           0.0%    41   18.4  18.5  18.2  19.3   0.0  
-
-**7.** DNS сервера NS    
-dns.google.             21600   IN      NS      ns3.zdns.google.  
-dns.google.             21600   IN      NS      ns4.zdns.google.  
-dns.google.             21600   IN      NS      ns1.zdns.google.    
-dns.google.             21600   IN      NS      ns2.zdns.google.    
-   
-A сервера  
-dns.google.             362     IN      A       8.8.4.4  
-dns.google.             362     IN      A       8.8.8.8  
-
-**8.** PTR
-4.4.8.8.in-addr.arpa.   42148   IN      PTR     dns.google.  
-8.8.8.8.in-addr.arpa.   43200   IN      PTR     dns.google.  
+**7.** В windows arp -a для просмотра записей arp. arp -d для удаления всего кэша и arp -d ADDRESS для удаления одной записи.   
+в Linux - ip neigh для просмотра. ip neigh flush для очистки и ip neigh del ADDRESS dev DEVICE для удаления одной записи. 
